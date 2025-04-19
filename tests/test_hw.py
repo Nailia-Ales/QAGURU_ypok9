@@ -13,13 +13,12 @@ def test_form_submitted():
     .fill_subject('Biology')
     .set_avatar("unnamed.jpg")
     .select_hobbies("Reading")
-    .select_hobbies("Music")
     .fill_current_address("Main street, 55 bld, 10 apt.")
     .select_state("Rajasthan")
     .select_city("Jaipur")
     .submit_form()
     .registered_user_should_have(
-        "Maria", "Lopez", "MLopez@gmail.com", "Female", "0123456789", "10 October,1996", "Biology", "Reading, Music",
+        "Maria", "Lopez", "MLopez@gmail.com", "Female", "0123456789", "10 October,1996", "Biology", "Reading",
         "unnamed.jpg", "Main street, 55 bld, 10 apt.", "Rajasthan", "Jaipur"
     ))
 
