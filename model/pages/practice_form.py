@@ -1,6 +1,7 @@
 from selene import browser, have, command
 
-from model.resource import path
+from model import resource
+from model.data.users import User
 
 
 class RegistrationPage:
@@ -12,11 +13,11 @@ class RegistrationPage:
         self.mobile_number = browser.element("#userNumber")
 
         self.date_of_birth_input = browser.element("#dateOfBirthInput")
-        self.month = browser.element(".react-datepicker__month-select")
         self.year = browser.element(".react-datepicker__year-select")
+        self.month = browser.element(".react-datepicker__month-select")
 
         self.subject_input = browser.element('#subjectsInput')
-        self.hobbies = browser.all('.custom-control-label')
+        self.hobbies = browser.all('[for^=hobbies-checkbox]')
         self.upload_avatar = browser.element('#uploadPicture')
         self.current_address = browser.element("#currentAddress")
         self.state = browser.element("#state")
@@ -47,11 +48,13 @@ class RegistrationPage:
         self.mobile_number.type(value)
         return self
 
-    def fill_date_of_birth(self, month, year, day):
+    def fill_date_of_birth(self, year, month, day):
         self.date_of_birth_input.click()
-        self.month.click().element(f'[value="{month}"]').click()
         self.year.click().element(f'[value="{year}"]').click()
+        self.month.click().element(f'[value="{month}"]').click()
         browser.element(f".react-datepicker__day--0{day}").click()
+        # self.year.type(year)
+        # self.month.type(month)
         return self
 
     def fill_subject(self, value):
@@ -63,9 +66,10 @@ class RegistrationPage:
         return self
 
     def set_avatar(self, value):
-        # self.upload_avatar.set_value(resource.path(file_name))
-        # self.upload_avatar.type(os.path.abspath(value))
-        self.upload_avatar.set_value(path(value))
+        self.upload_avatar.set_value(resource.path(value))
+        # # self.upload_avatar.type(os.path.abspath(value))
+        # # self.upload_avatar.set_value(path(value))
+        # self.upload_avatar.set_value(os.path.abspath(f'resources/{value}'))
         return self
 
     def fill_current_address(self, value):
@@ -85,20 +89,35 @@ class RegistrationPage:
         browser.element("#submit").perform(command.js.scroll_into_view).click()
         return self
 
-    def registered_user_should_have(self, first_name, last_name, email, gender, mobile_number, date_of_birth, subjects,
-                                    hobbies, file_name, address, state, city):
-        browser.element(".table").should(have.text(f'{first_name} {last_name}'))
-        browser.element(".table").should(have.text(email))
-        browser.element(".table").should(have.text(gender))
-        browser.element(".table").should(have.text(mobile_number))
-        browser.element(".table").should(have.text(date_of_birth))
-        browser.element(".table").should(have.text(subjects))
-        browser.element(".table").should(have.text(hobbies))
-        browser.element(".table").should(have.text(file_name))
-        browser.element(".table").should(have.text(address))
-        browser.element(".table").should(have.text(f'{state} {city}'))
+    def register(self, user: User):
+        self.fill_first_name(user.first_name)
+        self.fill_last_name(user.last_name)
+        self.fill_email(user.email)
+        self.select_gender(user.gender)
+        self.fill_mobile_number(user.mobile_number)
+        self.fill_date_of_birth(user.birth_year, user.birth_month, user.birth_day)
+        self.fill_subject(user.subject)
+        self.select_hobbies(user.hobbies)
+        self.set_avatar(user.avatar)
+        self.fill_current_address(user.address)
+        self.select_state(user.state)
+        self.select_city(user.city)
+        self.submit_form()
         return self
 
-    def check_if_required_fields_not_filled(self):
-        browser.element("#userForm").should(have.attribute("class").value("was-validated"))
+    def registered_user_should_have(self, user: User):
+        browser.element('.table').all('td').even.should(
+            have.exact_texts(
+                f'{user.first_name} {user.last_name}',
+                user.email,
+                user.gender,
+                user.mobile_number,
+                # f'{user.day} {user.month} {user.year}',
+                f'{user.birth_day} {user.text_birth_month},{user.birth_year}',
+                user.subject,
+                user.hobbies,
+                user.avatar,
+                user.address,
+                f'{user.state} {user.city}')
+        )
         return self

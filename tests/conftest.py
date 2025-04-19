@@ -5,15 +5,6 @@ from selene import browser
 from selenium import webdriver
 
 
-
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-
-
-
 @pytest.fixture(scope="function", autouse=True)
 def browser_config():
     driver_options = webdriver.ChromeOptions()

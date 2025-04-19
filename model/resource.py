@@ -1,9 +1,9 @@
-from pathlib import Path
+import os
 
 import tests
 
 
 def path(file_name):
-    return str(
-        Path(tests.__file__).parent.joinpath(f"resources/{file_name}").absolute()
+    return os.path.abspath(
+        os.path.join(os.path.dirname(tests.__file__), f'../resources/{file_name}')
     )
