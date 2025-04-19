@@ -1,1 +1,0 @@
-# QAGURU_ypok9
