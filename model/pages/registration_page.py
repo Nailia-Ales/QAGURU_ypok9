@@ -63,8 +63,6 @@ class RegistrationPage:
         return self
 
     def set_avatar(self, value):
-        # self.upload_avatar.set_value(resource.path(file_name))
-        # self.upload_avatar.type(os.path.abspath(value))
         self.upload_avatar.set_value(path(value))
         return self
 

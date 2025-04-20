@@ -1,4 +1,4 @@
-from model.pages.practice_form import RegistrationPage
+from model.pages.registration_page import RegistrationPage
 
 
 def test_form_submitted():
@@ -17,7 +17,7 @@ def test_form_submitted():
     .select_state("Rajasthan")
     .select_city("Jaipur")
     .submit_form()
-    .registered_user_should_have(
+    .should_have_registered_user(
         "Maria", "Lopez", "MLopez@gmail.com", "Female", "0123456789", "10 October,1996", "Biology", "Reading",
         "unnamed.jpg", "Main street, 55 bld, 10 apt.", "Rajasthan", "Jaipur"
     ))
@@ -31,7 +31,7 @@ def test_form_required_fields_only(today_date):
     .select_gender("Female")
     .fill_mobile_number("0123456789")
     .submit_form()
-    .registered_user_should_have(
+    .should_have_registered_user(
         "Maria", "Lopez", "", "Female", "0123456789", f"c", "", "",
         "", "", "", ""
     ))
