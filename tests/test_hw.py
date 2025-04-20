@@ -1,9 +1,9 @@
 from model.data.users import user
-from model.pages.practice_form import RegistrationPage
+from model.pages.registration_page import RegistrationPage
 
 
-def test_submit_practice_form():
+def test_submit_registration_page():
     practice_form = RegistrationPage()
     practice_form.open()
     practice_form.register(user)
-    practice_form.registered_user_should_have(user)
+    practice_form.should_have_registered_user(user)

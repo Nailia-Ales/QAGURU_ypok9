@@ -53,8 +53,6 @@ class RegistrationPage:
         self.year.click().element(f'[value="{year}"]').click()
         self.month.click().element(f'[value="{month}"]').click()
         browser.element(f".react-datepicker__day--0{day}").click()
-        # self.year.type(year)
-        # self.month.type(month)
         return self
 
     def fill_subject(self, value):
@@ -67,9 +65,6 @@ class RegistrationPage:
 
     def set_avatar(self, value):
         self.upload_avatar.set_value(resource.path(value))
-        # # self.upload_avatar.type(os.path.abspath(value))
-        # # self.upload_avatar.set_value(path(value))
-        # self.upload_avatar.set_value(os.path.abspath(f'resources/{value}'))
         return self
 
     def fill_current_address(self, value):
@@ -105,14 +100,13 @@ class RegistrationPage:
         self.submit_form()
         return self
 
-    def registered_user_should_have(self, user: User):
+    def should_have_registered_user(self, user: User):
         browser.element('.table').all('td').even.should(
             have.exact_texts(
                 f'{user.first_name} {user.last_name}',
                 user.email,
                 user.gender,
                 user.mobile_number,
-                # f'{user.day} {user.month} {user.year}',
                 f'{user.birth_day} {user.text_birth_month},{user.birth_year}',
                 user.subject,
                 user.hobbies,
