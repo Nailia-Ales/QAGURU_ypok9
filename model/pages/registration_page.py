@@ -83,7 +83,7 @@ class RegistrationPage:
         browser.element("#submit").perform(command.js.scroll_into_view).click()
         return self
 
-    def registered_user_should_have(self, first_name, last_name, email, gender, mobile_number, date_of_birth, subjects,
+    def should_have_registered_user(self, first_name, last_name, email, gender, mobile_number, date_of_birth, subjects,
                                     hobbies, file_name, address, state, city):
         browser.element(".table").should(have.text(f'{first_name} {last_name}'))
         browser.element(".table").should(have.text(email))
